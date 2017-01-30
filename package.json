@@ -1,0 +1,34 @@
+{
+  "name": "allex_stringbufferlowlevellib",
+  "version": "1.0.0",
+  "description": "String buffering lib",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/allex-lowlevel-libs/stringbuffer.git"
+  },
+  "keywords": [
+    "AllexJS",
+    "low",
+    "level",
+    "lib",
+    "string",
+    "buffering"
+  ],
+  "author": "Andrija Petrovic <andrija.hers@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/allex-lowlevel-libs/stringbuffer/issues"
+  },
+  "homepage": "https://github.com/allex-lowlevel-libs/stringbuffer#readme",
+  "devDependencies": {
+    "chai": "3.5.x",
+    "allex_checkslowlevellib": "1.x",
+    "allex_doublelinkedlistbaselowlevellib": "1.x",
+    "allex_inheritlowlevellib": "1.x",
+    "allex_fifolowlevellib": "1.x"
+  }
+}
