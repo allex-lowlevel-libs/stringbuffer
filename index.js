@@ -1,4 +1,4 @@
-function createStringBuffer (Fifo) {
+function createStringBuffer (Fifo, debug) {
   'use strict';
 
   var _zeroString = String.fromCharCode(0);
@@ -23,7 +23,9 @@ function createStringBuffer (Fifo) {
     if (this.buffer.length + string.length + 1 > this.maxlength) {
       this.fifo.push(this.buffer);
       this.buffer = '';
-      console.log(process.pid+' StringBuffer +', this.fifo.length, 'strings');
+      if (debug) {
+        console.log(process.pid+' StringBuffer +', this.fifo.length, 'strings');
+      }
     }
     if (this.buffer) {
       this.buffer += (_zeroString+string);
@@ -40,7 +42,13 @@ function createStringBuffer (Fifo) {
       return ret;
     }
     this.fifo.pop(consumerfunc);
-    console.log(process.pid+' StringBuffer -', this.fifo.length, 'strings');
+    if (debug) {
+      if (this.fifo) {
+        console.log(process.pid+' StringBuffer -', this.fifo.length, 'strings');
+      } else {
+        console.log('StringBuffer destroyed during get');
+      }
+    }
   };
   StringBuffer.prototype.hasContents = function () {
     if (!this.fifo) {
