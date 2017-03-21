@@ -20,7 +20,7 @@ function createStringBuffer (Fifo, debug) {
     if (!this.fifo) {
       return;
     }
-    if (this.buffer.length + string.length + 1 > this.maxlength) {
+    if (this.buffer.length > 0 && this.buffer.length + string.length + 1 > this.maxlength) {
       this.fifo.push(this.buffer);
       this.buffer = '';
       if (debug) {
