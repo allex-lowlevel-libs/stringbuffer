@@ -1,6 +1,6 @@
 {
   "name": "allex_stringbufferlowlevellib",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "String buffering lib",
   "main": "index.js",
   "scripts": {

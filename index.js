@@ -3,10 +3,11 @@ function createStringBuffer (Fifo, debug) {
 
   var _zeroString = String.fromCharCode(0);
 
-  function StringBuffer (maxlength) {
+  function StringBuffer (maxlength, delimiter) {
     this.maxlength = maxlength || 64*1024;
     this.fifo = new Fifo();
     this.buffer = '';
+    this.delimiter = (delimiter instanceof String || 'string' === typeof delimiter) ? delimiter : _zeroString;
   }
   StringBuffer.prototype.destroy = function () {
     this.buffer = null;
@@ -28,11 +29,24 @@ function createStringBuffer (Fifo, debug) {
       }
     }
     if (this.buffer) {
-      this.buffer += (_zeroString+string);
+      this.buffer += (this.delimiter+string);
     } else {
       this.buffer = string;
     }
   }
+  StringBuffer.prototype.addWithHandlers = function (string, wasemptyhandler, wasnotemptyhandler) {
+    var wasempty = !this.hasContents();
+    this.add(string);
+    if (wasempty) {
+      if ('function' === typeof wasemptyhandler) {
+        wasemptyhandler();
+      }
+      return;
+    }
+    if ('function' === typeof wasnotemptyhandler) {
+      wasnotemptyhandler();
+    }
+  };
   StringBuffer.prototype.get = function (consumerfunc) {
     var ret;
     if (!this.fifo.length) {
@@ -67,11 +81,12 @@ function createStringBuffer (Fifo, debug) {
   StringBuffer.prototype.onStringToConsume = function (consumerfunc, string) {
     StringBuffer.consumeString(string, consumerfunc);
   };
-  StringBuffer.consumeString = function (string, func, dojsonparse) {
-    var c1, c2, sl = string.length;
+  StringBuffer.consumeString = function (string, func, dojsonparse, delimiterchar) {
+    var c1, c2, dc, sl = string.length;
     c1 = c2 = 0;
+    dc = delimiterchar || 0;
     while (c2 < sl) {
-      if (string.charCodeAt(c2) === 0) {
+      if (string.charCodeAt(c2) === dc) {
         func(stringFromPositions(string, c1, c2, dojsonparse));
         c1 = c2+1;
       }
